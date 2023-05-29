@@ -2,7 +2,7 @@ const http = require('http')
 const path = require('node:path')
 const express = require('express')
 
-const adminRouter = require('./routes/admin')
+const adminData = require('./routes/admin')
 const shopRouter = require('./routes/shop')
 
 const app = express()
@@ -10,12 +10,16 @@ const app = express()
 app.use(express.static(path.join(__dirname,'public')))
 //body parser
 app.use(express.urlencoded({extended:true}))
-app.use('/admin',adminRouter)
+// setting up templating engine
+app.set('view engine','ejs') // name of template engine that will be used
+app.set('views','views') // location of views folder
+//routes
+app.use('/admin',adminData.router)
 app.use(shopRouter)
-// returning 404 error
+// returning 404 page not found error
 app.use((req,res,next)=>{
     res.status(404)
-    res.sendFile(path.join(__dirname,'views','404.html'))
+    res.render('404',{docTitle:'page not found'})
 })
 
 
