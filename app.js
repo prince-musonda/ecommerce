@@ -1,26 +1,24 @@
-const http = require('http')
-const path = require('node:path')
-const express = require('express')
+const path = require('path');
 
-const errorController = require('./controllers/error')
-const adminRouter = require('./routes/admin')
-const shopRouter = require('./routes/shop')
+const express = require('express');
+const bodyParser = require('body-parser');
 
-const app = express()
-//serve static files
-app.use(express.static(path.join(__dirname,'public')))
-//body parser
-app.use(express.urlencoded({extended:true}))
-// setting up templating engine
-app.set('view engine','ejs') // name of template engine that will be used
-app.set('views','views') // location of views folder
-//routes
-app.use('/admin',adminRouter)
-app.use(shopRouter)
-// returning 404 page not found error
-app.use(errorController.get404)
+const errorController = require('./controllers/error');
 
+const app = express();
 
-const server = http.createServer(app)
+app.set('view engine', 'ejs');
+app.set('views', 'views');
 
-server.listen(3005)
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/admin', adminRoutes);
+app.use(shopRoutes);
+
+app.use(errorController.get404);
+
+app.listen(3000);
