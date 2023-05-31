@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path') 
 
 const cartFilePath = path.join(__dirname,'..','data','cart.json')
-
+ 
 module.exports = class Cart{
     static addProduct(ProductId,productPrice){
         // open and analyze cart 
