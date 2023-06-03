@@ -40,6 +40,9 @@ module.exports = class Cart{
             const cart = JSON.parse(fileContent)
             const updatedCart = {...cart}
             const product = updatedCart.products.find(p => p.id === id)
+            if(!product){
+                return
+            }
             const productQty = product.qty
             updatedCart.products = updatedCart.products.filter(prod => prod.id != id)
             updatedCart.totalPrice = updatedCart.totalPrice - (productPrice * productQty)
